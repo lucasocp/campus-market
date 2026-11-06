@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: campusmarket
+      POSTGRES_USER: campusmarket
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no ambiente ou no arquivo .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - campusmarket-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U campusmarket -d campusmarket"]
+      interval: 5s
+      retries: 10
+volumes:
+  campusmarket-postgres:
